@@ -2,8 +2,8 @@
  * This Class is not needed for the project,
  * I was just to lazy and use it to create all books quickly.
  *
- * @author Marius Vallas
- * @version 1.0.2
+ * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
+ * @version 2.1
  * @since 26-12-2019
  */
 
