@@ -12,7 +12,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-public class BookToXML {
+public class FilesToBook {
     public static void main(String[] args) {
         // creation of an empty List of Book
         List<Book> books = new ArrayList<>();
@@ -22,7 +22,7 @@ public class BookToXML {
 
         // adding ID for each Book from the IDs file
         AtomicInteger index = new AtomicInteger(0);
-        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\bibliothèque\\src\\IDs.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\IDs.txt"))) {
             stream.forEach(line -> {
                 books.get(index.getAndIncrement()).setID(line);
             });
@@ -32,7 +32,7 @@ public class BookToXML {
 
         // adding title for each Book from the Titles file
         index.set(0);
-        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\bibliothèque\\src\\Titles.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\Titles.txt"))) {
             stream.forEach(line -> {
                 books.get(index.getAndIncrement()).setTitle(line);
             });
@@ -42,7 +42,7 @@ public class BookToXML {
 
         // adding author for each Book from the Authors file
         index.set(0);
-        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\bibliothèque\\src\\Authors.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\Authors.txt"))) {
             stream.forEach(line -> {
                 books.get(index.getAndIncrement()).setAuthor(line);
             });
@@ -52,7 +52,7 @@ public class BookToXML {
 
         // adding content for each Book from the Contents file
         index.set(0);
-        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\bibliothèque\\src\\Contents.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\Contents.txt"))) {
             stream.forEach(line -> {
                 books.get(index.getAndIncrement()).setContent(line);
             });
@@ -63,7 +63,7 @@ public class BookToXML {
         books.forEach(book -> {
             book.setAvailable(true);
             try {
-                File file = new File("C:\\Users\\Marius\\Documents\\Code\\JAVA\\bibliothèque\\src\\library\\" + book.getTitle() + ".xml");
+                File file = new File("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\library\\" + book.getTitle() + ".xml");
                 JAXBContext jaxbContext = JAXBContext.newInstance(Book.class);
                 Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
