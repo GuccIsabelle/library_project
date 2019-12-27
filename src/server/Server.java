@@ -16,7 +16,8 @@ public class Server {
                     Socket socket = serverSocket.accept();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Server not found or some shit...\n" +
+                        "IOException error be like: " + e.getMessage());
             }
         });
 
@@ -27,7 +28,8 @@ public class Server {
                     Socket socket = serverSocket.accept();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Server not found or some shit...\n" +
+                        "IOException error be like: " + e.getMessage());
             }
         });
 
@@ -38,7 +40,8 @@ public class Server {
                     Socket socket = serverSocket.accept();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Server not found or some shit...\n" +
+                        "IOException error be like: " + e.getMessage());
             }
         });
     }
