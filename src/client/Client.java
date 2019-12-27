@@ -18,7 +18,6 @@ public class Client {
             outToServer.writeUTF(sentence);
             modifiedSentence = inFromServer.readUTF();
             System.out.println(modifiedSentence);
-            outToServer.flush();
         }
     }
 }

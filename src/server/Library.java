@@ -3,7 +3,6 @@
  *
  * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
  * @version 2.4
- * @since 26-12-2019
  */
 
 package server;
@@ -62,6 +61,6 @@ public class Library {
     public String toString() {
         return catalog.stream()
                 .map(String::valueOf)
-                .collect(Collectors.joining("\n", "Library catalog :\n\n", "\n" + catalog.size() + " books total"));
+                .collect(Collectors.joining("\n", "Library catalog :\n\n", "\n" + catalog.size() + " books total\n"));
     }
 }

@@ -4,7 +4,6 @@
  *
  * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
  * @version 1.7
- * @since 26-12-2019
  */
 
 package server;

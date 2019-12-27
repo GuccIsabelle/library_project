@@ -2,9 +2,8 @@
  * This Class is not needed for the project,
  * I was just to lazy and use it to create all books quickly.
  *
- * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
+ * @author Marius Vallas
  * @version 2.1
- * @since 26-12-2019
  */
 
 package server;
@@ -43,6 +42,7 @@ public class FilesToBookIntoXML {
         for (int i = 0; i < 100; i -= -1) {
             Book b = new Book();
             b.setAvailable(true);
+            b.setReserved(false);
             books.add(b);
         }
     }

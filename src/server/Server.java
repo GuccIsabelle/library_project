@@ -1,30 +1,45 @@
 package server;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-public class Server implements Runnable {
+public class Server {
     public static void main(String[] args) throws Exception {
         Library library = new Library("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\library");
-        System.out.println(library.toString());
 
-        String clientSentence;
-        String capitalizedSentence;
-        ServerSocket welcomeSocket = new ServerSocket(2500);
 
-        while (true) {
-            Socket connectionSocket = welcomeSocket.accept();
-            DataInputStream inFromClient = new DataInputStream(connectionSocket.getInputStream());
-            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-            clientSentence = inFromClient.readUTF();
-            capitalizedSentence = clientSentence.toUpperCase();
-            outToClient.writeUTF(capitalizedSentence);
-            outToClient.flush();
-        }
-    }
+        Thread booking = new Thread(() -> {
+            final int port = 2500;
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
-    @Override
-    public void run() {
+        Thread borrowing = new Thread(() -> {
+            final int port = 2600;
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
+        Thread returning = new Thread(() -> {
+            final int port = 2700;
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

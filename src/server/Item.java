@@ -6,7 +6,6 @@
  *
  * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
  * @version 1.4
- * @since 26-12-2019
  */
 
 package server;
@@ -19,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public abstract class Item {
     private String ID;
     private boolean available;
+    private boolean reserved;
 
     /**
      * Empty constructor because of the XML integration.
@@ -46,5 +46,16 @@ public abstract class Item {
     @XmlElement
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    /* Auto generated getter */
+    public boolean isReserved() {
+        return reserved;
+    }
+
+    /* Auto generated setter */
+    @XmlElement
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
     }
 }
