@@ -1,6 +1,6 @@
 # Library Project
 
-A Java project using Sockets, Multi-threading and Object ↹ XML conversion.
+A Java project using Sockets, Multi-threading and Object-XML conversion.
 
 ## Structure
 
