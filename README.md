@@ -4,9 +4,9 @@ A Java project using Sockets, Multi-threading and Object-XML conversion.
 
 ## Structure
 
-* [Assets](src/server/document/assets) - Files used to create all books.
+* [Assets](src/server/document/book/assets) - Files used to create all books.
 * [Client](src/client) - Everything in relation with the client side is here.
-* [server.document.library](src/server/document/library) - This is where books end up after being converted to XML files.
+* [server.document.book.library](src/server/document/book/library) - This is where books end up after being converted to XML files.
 * [server](src/server) - Server folder. *duh*
 
 ### Assets

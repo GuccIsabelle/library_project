@@ -5,9 +5,9 @@
  * @version 2.4
  */
 
-package server;
+package server.document.book;
 
-import server.document.Book;
+import server.document.book.Book;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
