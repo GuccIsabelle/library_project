@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class Server {
     public static void main(String[] args) throws Exception {
-        Library library = new Library("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server.document.library");
+        Library library = new Library("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\library");
         System.out.println(library.toString());
 
         Thread bookingThread = new Thread(() -> {
@@ -45,8 +45,8 @@ public class Server {
             }
         });
 
-        bookingThread.start();
-        borrowingThread.start();
-        returningThread.start();
+//        bookingThread.start();
+//        borrowingThread.start();
+//        returningThread.start();
     }
 }

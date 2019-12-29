@@ -8,8 +8,6 @@
 
 package server.document;
 
-import server.document.Book;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,6 +43,7 @@ public class FilesToBookIntoXML {
             Book b = new Book();
             b.setAvailable(true);
             b.setReserved(false);
+            b.setUser(null);
             books.add(b);
         }
     }
