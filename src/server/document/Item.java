@@ -1,6 +1,6 @@
 /**
  * Abstract Class used to easily add more things to
- * the library in the future.
+ * the server.document.library in the future.
  * This Class also have everything it needs to be
  * converted into an XML file.
  *
@@ -8,14 +8,18 @@
  * @version 1.4
  */
 
-package server;
+package server.document;
+
+import server.document.exception.BookingException;
+import server.document.exception.ReturnException;
+import server.user.User;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public abstract class Item {
+public abstract class Item implements iDocument {
     private String ID;
     private boolean available;
     private boolean reserved;
@@ -57,5 +61,20 @@ public abstract class Item {
     @XmlElement
     public void setReserved(boolean reserved) {
         this.reserved = reserved;
+    }
+
+    @Override
+    public void booking(User ab) throws BookingException {
+
+    }
+
+    @Override
+    public void borrowing(User ab) throws BookingException {
+
+    }
+
+    @Override
+    public void returning() throws ReturnException {
+
     }
 }

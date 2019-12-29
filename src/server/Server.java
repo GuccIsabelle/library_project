@@ -6,10 +6,10 @@ import java.net.Socket;
 
 public class Server {
     public static void main(String[] args) throws Exception {
-        Library library = new Library("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\library");
+        Library library = new Library("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server.document.library");
+        System.out.println(library.toString());
 
-
-        Thread booking = new Thread(() -> {
+        Thread bookingThread = new Thread(() -> {
             final int port = 2500;
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
@@ -21,7 +21,7 @@ public class Server {
             }
         });
 
-        Thread borrowing = new Thread(() -> {
+        Thread borrowingThread = new Thread(() -> {
             final int port = 2600;
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
@@ -33,7 +33,7 @@ public class Server {
             }
         });
 
-        Thread returning = new Thread(() -> {
+        Thread returningThread = new Thread(() -> {
             final int port = 2700;
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
@@ -44,5 +44,9 @@ public class Server {
                         "IOException error be like: " + e.getMessage());
             }
         });
+
+        bookingThread.start();
+        borrowingThread.start();
+        returningThread.start();
     }
 }

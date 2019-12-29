@@ -6,7 +6,9 @@
  * @version 2.1
  */
 
-package server;
+package server.document;
+
+import server.document.Book;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,10 +26,10 @@ public class FilesToBookIntoXML {
         bookInitialisation(books);
 
         // adding everything useful to all books
-        addID(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\IDs.txt"));
-        addTitle(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\Titles.txt"));
-        addAuthor(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\Authors.txt"));
-        addContent(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\assets\\Contents.txt"));
+        addID(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\assets\\IDs.txt"));
+        addTitle(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\assets\\Titles.txt"));
+        addAuthor(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\assets\\Authors.txt"));
+        addContent(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\assets\\Contents.txt"));
 
         // creating XML files
         books.forEach(Book::toXML);

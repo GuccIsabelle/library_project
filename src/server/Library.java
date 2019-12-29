@@ -7,6 +7,8 @@
 
 package server;
 
+import server.document.Book;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;

@@ -6,7 +6,7 @@
  * @version 1.7
  */
 
-package server;
+package server.document;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -80,7 +80,7 @@ public class Book extends Item {
      */
     public void toXML() {
         try {
-            File file = new File("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\library\\" + this.getTitle() + ".xml");
+            File file = new File("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\library\\" + this.getTitle() + ".xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(Book.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
