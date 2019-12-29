@@ -11,8 +11,14 @@ public interface iDocument {
     void returning() throws ReturnException;
 
     class BookingException extends Exception {
+        public BookingException(String error) {
+            super(error);
+        }
     }
 
     class ReturnException extends Exception {
+        public ReturnException(String error) {
+            super(error);
+        }
     }
 }

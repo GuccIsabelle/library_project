@@ -86,7 +86,7 @@ public abstract class Item implements iDocument {
             this.setReserved(true); // if it's the case then reserves it
             this.setUser(user); // and set user
         } else {
-            System.out.println("Item is either already reserved or unavailable."); // if not then display error
+            throw new BookingException("Item is either already reserved or unavailable.");
         }
     }
 
@@ -103,7 +103,7 @@ public abstract class Item implements iDocument {
             if (this.getUser() == user) // if reserved then check user
                 this.setAvailable(false); // if users are the same then borrowing is ok
             else
-                System.out.println("reserved"); // if not then display error
+                throw new BookingException("Can't borrow reserved item.");
         else {
             this.setAvailable(false); // if not reserved then borrowing is ok
             this.setUser(user); // and set user
@@ -118,8 +118,12 @@ public abstract class Item implements iDocument {
      */
     @Override
     public void returning() throws ReturnException {
-        this.setAvailable(true);
-        this.setReserved(false);
-        this.setUser(null);
+        if (this.isAvailable())
+            throw new ReturnException("Can't return non-borrowed item.");
+        else {
+            this.setAvailable(true);
+            this.setReserved(false);
+            this.setUser(null);
+        }
     }
 }
