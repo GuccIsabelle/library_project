@@ -73,6 +73,13 @@ public abstract class Item implements iDocument {
         this.user = user;
     }
 
+    /**
+     * Books an item for someone if not
+     * already booked by someone else.
+     *
+     * @param user User who wants to reserve the item
+     * @throws BookingException
+     */
     @Override
     public void booking(User user) throws BookingException {
         if (this.available && !this.reserved) { // check if Item's available and is not reserved
@@ -83,6 +90,13 @@ public abstract class Item implements iDocument {
         }
     }
 
+    /**
+     * Set an item to "borrowed" if not already
+     * and only if reserved by the right user.
+     *
+     * @param user User who wants to take the item
+     * @throws BookingException
+     */
     @Override
     public void borrowing(User user) throws BookingException {
         if (this.reserved) // check if Item's reserved
@@ -96,6 +110,12 @@ public abstract class Item implements iDocument {
         }
     }
 
+    /**
+     * Set an item to its original state, meaning
+     * it's good to be reserved or borrowed again.
+     *
+     * @throws ReturnException
+     */
     @Override
     public void returning() throws ReturnException {
         this.setAvailable(true);
