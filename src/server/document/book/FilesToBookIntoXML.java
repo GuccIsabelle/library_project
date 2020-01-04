@@ -24,10 +24,11 @@ public class FilesToBookIntoXML {
         bookInitialisation(books);
 
         // adding everything useful to all books
-        addID(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\book\\assets\\IDs.txt"));
-        addTitle(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\book\\assets\\Titles.txt"));
-        addAuthor(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\book\\assets\\Authors.txt"));
-        addContent(books, Paths.get("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\book\\assets\\Contents.txt"));
+        String assetsPath = "C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\document\\book\\assets\\";
+        addID(books, Paths.get(assetsPath + "IDs.txt"));
+        addTitle(books, Paths.get(assetsPath + "Titles.txt"));
+        addAuthor(books, Paths.get(assetsPath + "Authors.txt"));
+        addContent(books, Paths.get(assetsPath + "Contents.txt"));
 
         // creating XML files
         books.forEach(Book::toXML);

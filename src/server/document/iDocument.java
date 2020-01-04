@@ -4,7 +4,8 @@
  * some professors don't like it. Sorry again.
  * - Marius Vallas.
  *
- * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
+ * @author Jean-François Brette
+ * @contributor Marius Vallas
  * @version 1.1
  */
 
