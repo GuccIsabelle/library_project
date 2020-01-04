@@ -1,6 +1,6 @@
 /**
  * This Class extends the Item Class for obvious reasons.
- * It to have all the XML crap needed to be converted.
+ * It too have all the XML crap needed to be converted.
  *
  * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
  * @version 1.7
