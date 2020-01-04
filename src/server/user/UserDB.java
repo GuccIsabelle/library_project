@@ -1,11 +1,4 @@
-/**
- * This Class is used for converting
- *
- * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
- * @version 2.4
- */
-
-package server.document.book;
+package server.user;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -18,16 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Library {
-    private List<Book> catalog = new ArrayList<>();
+public class UserDB {
+    private List<User> userList = new ArrayList<>();
 
-    /**
-     * Constructor for the books catalog.
-     * Need a folder with only correctly formed XML files.
-     *
-     * @param path Path to the XML files' folder
-     */
-    public Library(String path) {
+    public UserDB(String path) {
         try {
             Files.walk(Paths.get(path))
                     .filter(Files::isRegularFile)
@@ -35,9 +22,9 @@ public class Library {
                 File file = new File(String.valueOf(p));
                 JAXBContext jaxbContext = null;
                 try {
-                    jaxbContext = JAXBContext.newInstance(Book.class);
+                    jaxbContext = JAXBContext.newInstance(User.class);
                     Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                    catalog.add((Book) jaxbUnmarshaller.unmarshal(file));
+                    userList.add((User) jaxbUnmarshaller.unmarshal(file));
                 } catch (JAXBException e) {
                     e.printStackTrace();
                 }
@@ -48,8 +35,8 @@ public class Library {
     }
 
     /* Auto generated getter */
-    public List<Book> getCatalog() {
-        return catalog;
+    public List<User> getUserList() {
+        return userList;
     }
 
     /**
@@ -59,8 +46,8 @@ public class Library {
      */
     @Override
     public String toString() {
-        return catalog.stream()
+        return userList.stream()
                 .map(String::valueOf)
-                .collect(Collectors.joining("\n", "Library catalog :\n\n", "\n" + catalog.size() + " books total\n"));
+                .collect(Collectors.joining("\n", "User list :\n\n", "\n" + userList.size() + " users total\n"));
     }
 }
