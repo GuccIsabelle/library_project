@@ -11,6 +11,7 @@ package server.user;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
@@ -33,7 +34,7 @@ public class User {
     }
 
     /* Auto generated setter */
-    @XmlElement
+    @XmlAttribute
     public void setID(String ID) {
         this.ID = ID;
     }
