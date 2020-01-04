@@ -30,10 +30,10 @@ public class Server {
                             DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
 
                             String bookID = inFromClient.readUTF();
-                            library.getCatalog().stream()
-                                    .filter(book -> book.getID().equals(bookID))
-                                    .collect(Collectors.toList())
-                                    .forEach(book -> book.booking(user));
+//                            library.getCatalog().stream()
+//                                    .filter(book -> book.getID().equals(bookID))
+//                                    .collect(Collectors.toList())
+//                                    .forEach(book -> book.booking(user));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
