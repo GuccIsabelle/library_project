@@ -34,6 +34,12 @@ public class UserDB {
         }
     }
 
+    public User findUserFromID(String ID) {
+        return userList.stream()
+                .filter(user -> user.getID().equals(ID))
+                .findAny().orElse(null);
+    }
+
     /* Auto generated getter */
     public List<User> getUserList() {
         return userList;

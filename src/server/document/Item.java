@@ -82,6 +82,7 @@ public abstract class Item implements iDocument {
      */
     @Override
     public void booking(User user) throws BookingException {
+        assert user != null : "User can't be null."; // panic if user not in database
         if (this.available && !this.reserved) { // check if Item's available and is not reserved
             this.setReserved(true); // if it's the case then reserves it
             this.setUser(user); // and set user
@@ -99,6 +100,7 @@ public abstract class Item implements iDocument {
      */
     @Override
     public void borrowing(User user) throws BookingException {
+        assert user != null : "User can't be null."; // panic if user not in database
         if (this.reserved) // check if Item's reserved
             if (this.getUser() == user) // if reserved then check user
                 this.setAvailable(false); // if users are the same then borrowing is ok
