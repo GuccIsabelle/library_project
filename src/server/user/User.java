@@ -40,14 +40,14 @@ public class User {
         this.ID = ID;
     }
 
-    /* Auto generated getter */
-    public String getPassword() {
+    /* Auto generated getter, modified to package-private */
+    String getPassword() {
         return password;
     }
 
-    /* Auto generated setter */
+    /* Auto generated setter, modified to package-private */
     @XmlElement
-    public void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password;
     }
 

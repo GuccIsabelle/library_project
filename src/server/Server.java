@@ -116,6 +116,9 @@ public class Server {
             }
         }).start();
 
+        /**
+         * Authentication thread
+         */
         new Thread(() -> {
             final int port = 6969; // ah ah lmao, get it ?
             try {

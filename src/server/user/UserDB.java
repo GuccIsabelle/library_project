@@ -35,9 +35,9 @@ public class UserDB {
         }
     }
 
-    public User returnIfExist(String username, String password) {
+    public User returnIfExist(String ID, String password) {
         return Objects.requireNonNull(userList.stream()
-                .filter(user -> user.getID().equals(username) && user.getPassword().equals(password))
+                .filter(user -> user.getID().equals(ID) && user.getPassword().equals(password))
                 .findAny().orElse(null));
     }
 
