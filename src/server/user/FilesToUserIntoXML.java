@@ -27,6 +27,7 @@ public class FilesToUserIntoXML {
         // adding everything useful to all users
         String assetPath = "C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\user\\assets\\";
         addID(users, Paths.get(assetPath + "IDs.txt"));
+        addPassword(users, Paths.get(assetPath + "Passwords.txt"));
         addName(users, Paths.get(assetPath + "Names.txt"));
         addAge(users, Paths.get(assetPath + "Ages.txt"));
 
@@ -56,6 +57,23 @@ public class FilesToUserIntoXML {
         try (Stream<String> stream = Files.lines(Paths.get(String.valueOf(path)))) {
             stream.forEach(line -> {
                 users.get(index.getAndIncrement()).setID(line);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adding Password to all Users from the given file.
+     *
+     * @param users ArrayList of User
+     * @param path  Path to the Passwords' file
+     */
+    private static void addPassword(List<User> users, Path path) {
+        AtomicInteger index = new AtomicInteger(0);
+        try (Stream<String> stream = Files.lines(Paths.get(String.valueOf(path)))) {
+            stream.forEach(line -> {
+                users.get(index.getAndIncrement()).setPassword(line);
             });
         } catch (IOException e) {
             e.printStackTrace();

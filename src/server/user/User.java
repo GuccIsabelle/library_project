@@ -19,6 +19,7 @@ import java.io.File;
 @XmlRootElement
 public class User {
     private String ID;
+    private String password;
     private String name;
     private int age;
 
@@ -37,6 +38,17 @@ public class User {
     @XmlAttribute
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    /* Auto generated getter */
+    public String getPassword() {
+        return password;
+    }
+
+    /* Auto generated setter */
+    @XmlElement
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /* Auto generated getter */
@@ -69,6 +81,7 @@ public class User {
     @Override
     public String toString() {
         return "User n°" + getID() + " {\n" +
+                "  Pass : ******\n" +
                 "  Name : " + getName() + "\n" +
                 "  Age  : " + getAge() + "\n}";
     }
