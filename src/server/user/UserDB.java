@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UserDB {
@@ -36,9 +35,9 @@ public class UserDB {
     }
 
     public User returnIfExist(String ID, String password) {
-        return Objects.requireNonNull(userList.stream()
+        return userList.stream()
                 .filter(user -> user.getID().equals(ID) && user.getPassword().equals(password))
-                .findAny().orElse(null));
+                .findAny().orElse(null);
     }
 
     public User findUserFromID(String ID) {

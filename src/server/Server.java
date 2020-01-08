@@ -129,6 +129,7 @@ public class Server {
                         try {
                             String[] userCredentials = new DataInputStream(socket.getInputStream()).readUTF().split("\\s+");
                             new ObjectOutputStream(socket.getOutputStream()).writeObject(userDB.returnIfExist(userCredentials[0], userCredentials[1]));
+                            new DataOutputStream(socket.getOutputStream()).writeUTF(library.toString());
 
                         } catch (IOException e) {
                             e.printStackTrace();

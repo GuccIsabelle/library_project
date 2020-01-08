@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 
 @XmlRootElement
-public class User {
+public class User implements java.io.Serializable {
     private String ID;
     private String password;
     private String name;
