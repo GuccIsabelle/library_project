@@ -7,6 +7,7 @@ import server.user.UserDB;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
@@ -123,8 +124,9 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     new Thread(() -> {
                         try {
-                            DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
-                            DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
+                            String[] userCredentials = new DataInputStream(socket.getInputStream()).readUTF().split("\\s+");
+                            new ObjectOutputStream(socket.getOutputStream()).writeObject(userDB.returnIfExist(userCredentials[0], userCredentials[1]));
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
