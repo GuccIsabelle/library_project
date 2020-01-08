@@ -1,19 +1,40 @@
 package client;
 
+import server.user.User;
+
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
     public static void main(String[] argv) {
+        if (connexion() != null) {
+            System.out.println("Authentication successful.");
+            startApplication();
+        } else {
+            System.out.println("Something went wrong.");
+        }
+    }
+
+    private static User connexion() {
         Scanner inFromUser = new Scanner(System.in);
-        String[] userCredentials = inFromUser.nextLine().split("\\s+");
 
         try {
-            Socket clientSocket = new Socket("localhost", 6969);
-        } catch (IOException e) {
+            Socket connexionSocket = new Socket("localhost", 6969);
+            // sending user's credentials to the server for authentication
+            new DataOutputStream(connexionSocket.getOutputStream()).writeUTF(inFromUser.nextLine());
+            // watching for confirmation
+            return (User) new ObjectInputStream(connexionSocket.getInputStream()).readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    private static void startApplication() {
+
     }
 }
 
