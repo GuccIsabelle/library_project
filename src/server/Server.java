@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class Server {
@@ -24,8 +26,7 @@ public class Server {
          */
         new Thread(() -> {
             final int port = 2500;
-            try {
-                ServerSocket serverSocket = new ServerSocket(port);
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     new Thread(() -> {
@@ -57,8 +58,7 @@ public class Server {
          */
         new Thread(() -> {
             final int port = 2600;
-            try {
-                ServerSocket serverSocket = new ServerSocket(port);
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     new Thread(() -> {
@@ -90,8 +90,7 @@ public class Server {
          */
         new Thread(() -> {
             final int port = 2700;
-            try {
-                ServerSocket serverSocket = new ServerSocket(port);
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     new Thread(() -> {
@@ -120,21 +119,45 @@ public class Server {
          * Authentication thread
          */
         new Thread(() -> {
-            final int port = 6969; // ah ah lmao, get it ?
-            try {
-                ServerSocket serverSocket = new ServerSocket(port);
+            final int port = 69; // ah ah lmao, get it ?
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     new Thread(() -> {
                         try {
                             String[] userCredentials = new DataInputStream(socket.getInputStream()).readUTF().split("\\s+");
                             new ObjectOutputStream(socket.getOutputStream()).writeObject(userDB.returnIfExist(userCredentials[0], userCredentials[1]));
-                            new DataOutputStream(socket.getOutputStream()).writeUTF(library.toString());
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
+                    }).start();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }).start();
+
+        /**
+         * Catalogue thread
+         */
+        new Thread(() -> {
+            final int port = 420; // that's comedy right here
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                    new Thread(() -> {
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss z");
+                        Date date = new Date(System.currentTimeMillis());
+                        try {
+                            new DataOutputStream(socket.getOutputStream()).writeUTF(library.toString() +
+                                    "last updated : " + formatter.format(date) + "\n");
+                            socket.shutdownOutput();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }).start();
                 }
             } catch (IOException e) {

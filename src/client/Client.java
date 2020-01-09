@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class Client {
     private static User currentUser;
-    private static String bookCatalogue;
 
     public static void main(String[] argv) {
         connexion();
@@ -23,7 +22,7 @@ public class Client {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("User don't exist.");
+            System.out.println("User doesn't exist.");
         }
     }
 
@@ -31,12 +30,12 @@ public class Client {
         Scanner inFromUser = new Scanner(System.in);
 
         try {
-            Socket connexionSocket = new Socket("localhost", 6969);
+            Socket connexionSocket = new Socket("localhost", 69);
             // sending user's credentials to the server for authentication
             new DataOutputStream(connexionSocket.getOutputStream()).writeUTF(inFromUser.nextLine());
             // watching for confirmation
             currentUser = (User) new ObjectInputStream(connexionSocket.getInputStream()).readObject();
-            bookCatalogue = new DataInputStream(connexionSocket.getInputStream()).readUTF();
+            connexionSocket.close();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Something went wrong.");
             e.printStackTrace();
@@ -46,29 +45,32 @@ public class Client {
     @SuppressWarnings("InfiniteLoopStatement")
     private static void startApplication() throws IOException {
         Scanner inFromUser = new Scanner(System.in);
-        Socket bookingSocket = new Socket("localhost", 2500);
-        Socket borrowingSocket = new Socket("localhost", 2600);
-        Socket returningSocket = new Socket("localhost", 2700);
 
         while (true) {
             String[] command = inFromUser.nextLine().split("\\s+");
             switch (command[0]) {
                 case "catalogue":
-                    System.out.println(bookCatalogue);
+                    System.out.println(new DataInputStream(new Socket("localhost", 420).getInputStream()).readUTF());
                     break;
                 case "booking":
+                    Socket bookingSocket = new Socket("localhost", 2500);
                     new DataOutputStream(bookingSocket.getOutputStream()).writeUTF(currentUser.getID());
                     new DataOutputStream(bookingSocket.getOutputStream()).writeUTF(command[1]);
                     System.out.println(new DataInputStream(bookingSocket.getInputStream()).readUTF());
+                    bookingSocket.close();
                     break;
                 case "borrowing":
+                    Socket borrowingSocket = new Socket("localhost", 2600);
                     new DataOutputStream(borrowingSocket.getOutputStream()).writeUTF(currentUser.getID());
                     new DataOutputStream(borrowingSocket.getOutputStream()).writeUTF(command[1]);
                     System.out.println(new DataInputStream(borrowingSocket.getInputStream()).readUTF());
+                    borrowingSocket.close();
                     break;
                 case "returning":
+                    Socket returningSocket = new Socket("localhost", 2700);
                     new DataOutputStream(returningSocket.getOutputStream()).writeUTF(command[1]);
                     System.out.println(new DataInputStream(returningSocket.getInputStream()).readUTF());
+                    returningSocket.close();
                     break;
                 case "help":
                     printHelp();
