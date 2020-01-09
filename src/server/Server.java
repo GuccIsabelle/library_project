@@ -107,7 +107,7 @@ public class Server {
                         } catch (IOException | iDocument.ReturnException e) {
                             e.printStackTrace();
                         }
-                    });
+                    }).start();
                 }
             } catch (IOException e) {
                 System.out.println("Server not found or some shit...\n" +
