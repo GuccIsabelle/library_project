@@ -1,3 +1,16 @@
+/**
+ * This Class is the main application for the server side.
+ * It involve using 5 threads :
+ * - 3 like stipulated in the contract
+ * - 2 added for user's convenience
+ * <p>
+ * Each thread wait for a connection to occur and then
+ * create a sub-thread to fulfill the user demand.
+ *
+ * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
+ * @version 3.8
+ */
+
 package server;
 
 import server.document.book.Library;

@@ -1,3 +1,12 @@
+/**
+ * This Class is the main application for the client side.
+ * It first ask for user credentials then ask the server
+ * if the user exist, if not ask again.
+ *
+ * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
+ * @version 3.4
+ */
+
 package client;
 
 import server.user.User;
