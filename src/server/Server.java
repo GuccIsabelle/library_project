@@ -2,6 +2,7 @@ package server;
 
 import server.document.book.Library;
 import server.document.iDocument;
+import server.document.iDocument.BookingException;
 import server.user.UserDB;
 
 import java.io.DataInputStream;
@@ -35,15 +36,19 @@ public class Server {
                             DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
                             String userID = inFromClient.readUTF();
                             String bookID = inFromClient.readUTF();
-                            /* processing */
+                            /* processing & outputting */
                             Objects.requireNonNull(library.getCatalog().stream()
                                     .filter(book -> book.getID().equals(bookID))
                                     .findAny().orElse(null))
                                     .booking(userDB.findUserFromID(userID));
-                            /* output */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Booking successful.");
-                        } catch (IOException | iDocument.BookingException e) {
+                        } catch (IOException | BookingException e) {
                             e.printStackTrace();
+                            try {
+                                new DataOutputStream(socket.getOutputStream()).writeUTF(e.getMessage());
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
                         }
                     }).start();
                 }
@@ -67,15 +72,19 @@ public class Server {
                             DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
                             String userID = inFromClient.readUTF();
                             String bookID = inFromClient.readUTF();
-                            /* processing */
+                            /* processing & outputting */
                             Objects.requireNonNull(library.getCatalog().stream()
                                     .filter(book -> book.getID().equals(bookID))
                                     .findAny().orElse(null))
                                     .borrowing(userDB.findUserFromID(userID));
-                            /* output */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Borrowing successful.");
-                        } catch (IOException | iDocument.BookingException e) {
+                        } catch (IOException | BookingException e) {
                             e.printStackTrace();
+                            try {
+                                new DataOutputStream(socket.getOutputStream()).writeUTF(e.getMessage());
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
                         }
                     }).start();
                 }
@@ -97,15 +106,19 @@ public class Server {
                         try {
                             /* initializing */
                             String bookID = new DataInputStream(socket.getInputStream()).readUTF();
-                            /* processing */
+                            /* processing & outputting */
                             Objects.requireNonNull(library.getCatalog().stream()
                                     .filter(book -> book.getID().equals(bookID))
                                     .findAny().orElse(null))
                                     .returning();
-                            /* output */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Returning successful.");
                         } catch (IOException | iDocument.ReturnException e) {
                             e.printStackTrace();
+                            try {
+                                new DataOutputStream(socket.getOutputStream()).writeUTF(e.getMessage());
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
                         }
                     }).start();
                 }

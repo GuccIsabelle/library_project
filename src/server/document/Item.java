@@ -78,10 +78,11 @@ public abstract class Item implements iDocument {
      * already booked by someone else.
      *
      * @param user User who wants to reserve the item
+     * @return Success message
      * @throws BookingException
      */
     @Override
-    public void booking(User user) throws BookingException {
+    public boolean booking(User user) throws BookingException {
         assert user != null : "User can't be null."; // panic if user not in database
         if (this.available && !this.reserved) { // check if Item's available and is not reserved
             this.setReserved(true); // if it's the case then reserves it
@@ -89,6 +90,7 @@ public abstract class Item implements iDocument {
         } else {
             throw new BookingException("Item is either already reserved or unavailable.");
         }
+        return true;
     }
 
     /**
@@ -96,10 +98,11 @@ public abstract class Item implements iDocument {
      * and only if reserved by the right user.
      *
      * @param user User who wants to take the item
+     * @return Success message
      * @throws BookingException
      */
     @Override
-    public void borrowing(User user) throws BookingException {
+    public boolean borrowing(User user) throws BookingException {
         assert user != null : "User can't be null."; // panic if user not in database
         if (this.reserved) // check if Item's reserved
             if (this.getUser() == user) // if reserved then check user
@@ -110,16 +113,18 @@ public abstract class Item implements iDocument {
             this.setAvailable(false); // if not reserved then borrowing is ok
             this.setUser(user); // and set user
         }
+        return true;
     }
 
     /**
      * Set an item to its original state, meaning
      * it's good to be reserved or borrowed again.
      *
+     * @return Success message
      * @throws ReturnException
      */
     @Override
-    public void returning() throws ReturnException {
+    public boolean returning() throws ReturnException {
         if (this.isAvailable())
             throw new ReturnException("Can't return non-borrowed item.");
         else {
@@ -127,5 +132,6 @@ public abstract class Item implements iDocument {
             this.setReserved(false);
             this.setUser(null);
         }
+        return true;
     }
 }

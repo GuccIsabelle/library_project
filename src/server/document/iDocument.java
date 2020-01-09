@@ -15,13 +15,13 @@ import server.user.User;
 
 public interface iDocument {
     /* books an item for someone */
-    void booking(User ab) throws BookingException;
+    boolean booking(User ab) throws BookingException;
 
     /* set an item to borrowed */
-    void borrowing(User ab) throws BookingException;
+    boolean borrowing(User ab) throws BookingException;
 
     /* return document or cancel booking */
-    void returning() throws ReturnException;
+    boolean returning() throws ReturnException;
 
     class BookingException extends Exception {
         public BookingException(String error) {
