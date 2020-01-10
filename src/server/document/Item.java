@@ -78,11 +78,10 @@ public abstract class Item implements iDocument {
      * already booked by someone else.
      *
      * @param user User who wants to reserve the item
-     * @return Success message
      * @throws BookingException
      */
     @Override
-    public boolean booking(User user) throws BookingException {
+    public void booking(User user) throws BookingException {
         assert user != null : "User can't be null."; // panic if user not in database
         if (this.available && !this.reserved) { // check if Item's available and is not reserved
             this.setReserved(true); // if it's the case then reserves it
@@ -90,7 +89,6 @@ public abstract class Item implements iDocument {
         } else {
             throw new BookingException("Item is either already reserved or unavailable.");
         }
-        return true;
     }
 
     /**
@@ -98,40 +96,41 @@ public abstract class Item implements iDocument {
      * and only if reserved by the right user.
      *
      * @param user User who wants to take the item
-     * @return Success message
      * @throws BookingException
      */
     @Override
-    public boolean borrowing(User user) throws BookingException {
+    public void borrowing(User user) throws BookingException {
         assert user != null : "User can't be null."; // panic if user not in database
         if (this.reserved) // check if Item's reserved
-            if (this.getUser() == user) // if reserved then check user
+            if (this.getUser() == user) { // if reserved then check user
+                this.setReserved(false);
                 this.setAvailable(false); // if users are the same then borrowing is ok
-            else
+            } else
                 throw new BookingException("Can't borrow reserved item.");
+        else if (!this.available)
+            throw new BookingException("Can't borrow already borrowed item.");
         else {
             this.setAvailable(false); // if not reserved then borrowing is ok
             this.setUser(user); // and set user
         }
-        return true;
     }
 
     /**
      * Set an item to its original state, meaning
      * it's good to be reserved or borrowed again.
      *
-     * @return Success message
      * @throws ReturnException
      */
     @Override
-    public boolean returning() throws ReturnException {
-        if (this.isAvailable())
+    public void returning(User user) throws ReturnException {
+        if (this.available || this.user == null)
             throw new ReturnException("Can't return non-borrowed item.");
+        else if (this.user != user)
+            throw new ReturnException("Can't return someone's else book.");
         else {
             this.setAvailable(true);
             this.setReserved(false);
             this.setUser(null);
         }
-        return true;
     }
 }

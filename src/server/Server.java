@@ -51,7 +51,7 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
                     new Thread(() -> {
-                        System.out.println("sub-thread " + Thread.currentThread().getId() + " started");
+                        System.out.println("booking sub-thread started, id : " + Thread.currentThread().getId());
                         try {
                             /* initializing */
                             DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
@@ -64,6 +64,7 @@ public class Server {
                                     .booking(userDB.findUserFromID(userID));
                             /* outputting */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Booking successful.");
+                            System.out.println("book n°" + bookID + " booked by user " + userID);
                         } catch (IOException | BookingException e) {
                             e.printStackTrace();
                             /* sending error message to client */
@@ -93,7 +94,7 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
                     new Thread(() -> {
-                        System.out.println("sub-thread " + Thread.currentThread().getId() + " started");
+                        System.out.println("borrowing sub-thread started, id : " + Thread.currentThread().getId());
                         try {
                             /* initializing */
                             DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
@@ -106,6 +107,7 @@ public class Server {
                                     .borrowing(userDB.findUserFromID(userID));
                             /* outputting */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Borrowing successful.");
+                            System.out.println("book n°" + bookID + " borrowed by user " + userID);
                         } catch (IOException | BookingException e) {
                             e.printStackTrace();
                             /* sending error message to client */
@@ -135,17 +137,20 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
                     new Thread(() -> {
-                        System.out.println("sub-thread " + Thread.currentThread().getId() + " started");
+                        System.out.println("returning sub-thread started, id : " + Thread.currentThread().getId());
                         try {
                             /* initializing */
-                            String bookID = new DataInputStream(socket.getInputStream()).readUTF();
+                            DataInputStream inFromClient = new DataInputStream(socket.getInputStream());
+                            String userID = inFromClient.readUTF();
+                            String bookID = inFromClient.readUTF();
                             /* processing */
                             Objects.requireNonNull(library.getCatalog().stream()
                                     .filter(book -> book.getID().equals(bookID))
                                     .findAny().orElse(null))
-                                    .returning();
+                                    .returning(userDB.findUserFromID(userID));
                             /* outputting */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Returning successful.");
+                            System.out.println("book n°" + bookID + " returned");
                         } catch (IOException | iDocument.ReturnException e) {
                             e.printStackTrace();
                             /* sending error message to client */
@@ -175,7 +180,7 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
                     new Thread(() -> {
-                        System.out.println("sub-thread " + Thread.currentThread().getId() + " started");
+                        System.out.println("authentication sub-thread started, id : " + Thread.currentThread().getId());
                         try {
                             /* getting user's credentials */
                             String[] userCredentials = new DataInputStream(socket.getInputStream()).readUTF().split("\\s+");
@@ -206,7 +211,7 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
                     new Thread(() -> {
-                        System.out.println("sub-thread " + Thread.currentThread().getId() + " started");
+                        System.out.println("catalogue sub-thread started, id : " + Thread.currentThread().getId());
                         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss z");
                         Date date = new Date(System.currentTimeMillis());
                         try {

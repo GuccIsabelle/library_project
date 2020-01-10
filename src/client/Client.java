@@ -36,6 +36,7 @@ public class Client {
     }
 
     private static void connexion() {
+        System.out.println("Please, enter your credentials :");
         Scanner inFromUser = new Scanner(System.in);
 
         try {
@@ -53,6 +54,7 @@ public class Client {
 
     @SuppressWarnings("InfiniteLoopStatement")
     private static void startApplication() throws IOException {
+        System.out.println(currentUser.toString());
         Scanner inFromUser = new Scanner(System.in);
 
         while (true) {
@@ -77,6 +79,7 @@ public class Client {
                     break;
                 case "returning":
                     Socket returningSocket = new Socket("localhost", 2700);
+                    new DataOutputStream(returningSocket.getOutputStream()).writeUTF(currentUser.getID());
                     new DataOutputStream(returningSocket.getOutputStream()).writeUTF(command[1]);
                     System.out.println(new DataInputStream(returningSocket.getInputStream()).readUTF());
                     returningSocket.close();
