@@ -15,7 +15,6 @@ import server.user.User;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Timer;
 
 @XmlRootElement
 public abstract class Item implements iDocument {
@@ -23,7 +22,6 @@ public abstract class Item implements iDocument {
     private boolean available;
     private boolean reserved;
     private User user;
-    private Timer timer;
 
     /**
      * Empty constructor because of the XML integration.
@@ -73,17 +71,6 @@ public abstract class Item implements iDocument {
     @XmlElement
     public void setUser(User user) {
         this.user = user;
-    }
-
-    /* Auto generated getter */
-    public Timer getTimer() {
-        return timer;
-    }
-
-    /* Auto generated setter */
-    @XmlElement
-    public void setTimer(Timer timer) {
-        this.timer = timer;
     }
 
     /**

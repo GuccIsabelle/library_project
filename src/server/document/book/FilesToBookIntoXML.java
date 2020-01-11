@@ -45,7 +45,6 @@ public class FilesToBookIntoXML {
             b.setAvailable(true);
             b.setReserved(false);
             b.setUser(null);
-            b.setTimer(null);
             books.add(b);
         }
     }
