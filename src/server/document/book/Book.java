@@ -59,8 +59,8 @@ public class Book extends Item {
 
     /* Auto generated setter */
     @XmlElement
-    public void setAuthor(String autor) {
-        this.author = autor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     /**
