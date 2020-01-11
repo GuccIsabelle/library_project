@@ -73,7 +73,7 @@ public class Book extends Item {
         return "Book n°" + getID() + " {\n" +
                 "  title  : " + title + "\n" +
                 "  author : " + author + "\n" +
-                ((isAvailable()) ? "} Available\n" : "} Not Available\n");
+                ((isAvailable()) ? (isReserved() ? "} Reserved\n" : "} Available\n") : "} Not Available\n");
     }
 
     /**

@@ -21,6 +21,7 @@ public class User implements java.io.Serializable {
     private String ID;
     private String password;
     private String name;
+    private String address;
     private int age;
 
     /**
@@ -63,6 +64,17 @@ public class User implements java.io.Serializable {
     }
 
     /* Auto generated getter */
+    public String getAddress() {
+        return address;
+    }
+
+    /* Auto generated setter */
+    @XmlElement
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /* Auto generated getter */
     public int getAge() {
         return age;
     }
@@ -80,10 +92,11 @@ public class User implements java.io.Serializable {
      */
     @Override
     public String toString() {
-        return "User n°" + getID() + " {\n" +
-                "  Pass : ******\n" +
-                "  Name : " + getName() + "\n" +
-                "  Age  : " + getAge() + "\n}";
+        return "User n°" + ID + " {\n" +
+                "  Pass  : **********\n" +
+                "  Name  : " + name + "\n" +
+                "  eMail : " + address + "\n" +
+                "  Age   : " + age + "\n}";
     }
 
     /**

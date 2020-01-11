@@ -29,6 +29,7 @@ public class FilesToUserIntoXML {
         addID(users, Paths.get(assetPath + "IDs.txt"));
         addPassword(users, Paths.get(assetPath + "Passwords.txt"));
         addName(users, Paths.get(assetPath + "Names.txt"));
+        addAddress(users, Paths.get(assetPath + "Addresses.txt"));
         addAge(users, Paths.get(assetPath + "Ages.txt"));
 
         // creating all XML files
@@ -91,6 +92,23 @@ public class FilesToUserIntoXML {
         try (Stream<String> stream = Files.lines(Paths.get(String.valueOf(path)))) {
             stream.forEach(line -> {
                 users.get(index.getAndIncrement()).setName(line);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adding Address to all Users from the given file.
+     *
+     * @param users ArrayList of User
+     * @param path  Path to the Addresses' file
+     */
+    private static void addAddress(List<User> users, Path path) {
+        AtomicInteger index = new AtomicInteger(0);
+        try (Stream<String> stream = Files.lines(Paths.get(String.valueOf(path)))) {
+            stream.forEach(line -> {
+                users.get(index.getAndIncrement()).setAddress(line);
             });
         } catch (IOException e) {
             e.printStackTrace();
