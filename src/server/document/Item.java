@@ -133,4 +133,10 @@ public abstract class Item implements iDocument {
             this.setUser(null);
         }
     }
+
+    public void reset() {
+        this.available = true;
+        this.reserved = false;
+        this.user = null;
+    }
 }

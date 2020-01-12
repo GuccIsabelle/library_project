@@ -13,6 +13,7 @@
 
 package server;
 
+import server.document.book.Book;
 import server.document.book.Library;
 import server.document.iDocument;
 import server.document.iDocument.BookingException;
@@ -27,6 +28,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Server {
     public static void main(String[] args) throws Exception {
@@ -38,6 +41,8 @@ public class Server {
         /* creating the user database */
         UserDB userDB = new UserDB("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\user\\database");
         System.out.println(userDB.toString());
+
+        Timer timer = new Timer();
 
         /**
          * Booking thread
@@ -58,10 +63,21 @@ public class Server {
                             String userID = inFromClient.readUTF();
                             String bookID = inFromClient.readUTF();
                             /* processing */
-                            Objects.requireNonNull(library.getCatalog().stream()
+                            Book b = Objects.requireNonNull(library.getCatalog().stream()
                                     .filter(book -> book.getID().equals(bookID))
-                                    .findAny().orElse(null))
-                                    .booking(userDB.findUserFromID(userID));
+                                    .findAny().orElse(null));
+                            b.booking(userDB.findUserFromID(userID));
+                            /* setting timer for the borrowing */
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    if (b.isAvailable()) { // if the book isn't borrowed by the user who reserved
+                                        b.reset(); // then make the book available again
+                                        System.out.println("book n°" + bookID + " has been reset.");
+                                    }
+                                    cancel();
+                                }
+                            }, 120000);
                             /* outputting */
                             new DataOutputStream(socket.getOutputStream()).writeUTF("Booking successful.");
                             System.out.println("book n°" + bookID + " booked by user " + userID);
@@ -212,7 +228,7 @@ public class Server {
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
                     new Thread(() -> {
                         System.out.println("catalogue sub-thread started, id : " + Thread.currentThread().getId());
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss z");
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss");
                         Date date = new Date(System.currentTimeMillis());
                         try {
                             new DataOutputStream(socket.getOutputStream()).writeUTF(library.toString() +
