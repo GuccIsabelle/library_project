@@ -1,12 +1,12 @@
 # Library Project
 
-A Java project using Sockets, Multi-threading, Object-XML conversion and a lot more.
+Un projet Java avec des Sockets, du Multy-threading, de la conversion vers du XML et plein d'autres trucs.
 
-The project is overall well documented, so I'll not explain the code here, if you want to know how a specific part works, just go to the file. Each file has a little tree of method at the beginning.
+Le projet est dans l'absolut bien commenté, donc le code ne sera pas expliqué en détail ici, si vous voulez vous renseigner sur une partie du code vous pouvez simplement aller voir le code en question.
 
-*I'll show a lil' bit of code when appropriate tho.*
+*Un peu de code sera expliqué, quand nécessaire.*
 
-## Project's structure
+## Structure du projet
 
 ``` 
 src
@@ -21,14 +21,14 @@ src
         └───database
 ```
 
-* [Client](src/client) - Contain `Client.java` , that's it... 
-* [Server](src/server) - Server folder.*duh*. Contain everything the server need to run correctly.
-    - [document](src/server/document) - Store the outline of the document and every subtype of document, like `Book` , and can easily be extended.
-    - [user](src/server/user) - Store the `User` Class and everything it need.
+* [Client](src/client) - Contient `Client.java` , c'est tout... 
+* [Server](src/server) - Dossier du serveur.*duh*. Contient tout ce dont le serveur a besoin.
+    - [document](src/server/document) - Contient le squelette du type `document` et les sous-type de document, comme la Class `Book` , cela facilite une possible extention.
+    - [user](src/server/user) - Contient la Class `User` et tout ce dont elle dépand.
 
 ## Document
 
-### Files
+### Fichiers
 
 ``` 
 document
@@ -48,15 +48,15 @@ document
         ┆   ...
 ```
 
-To form a new type of `Document` you have to extends `Item` (an abstract Class), who itself implements the `iDocument` interface. Then place it into a sub-folder like the `Book` Class.
+Pour former un nouveau type de `document` , vous devez étandre la Class `Item` (qui elle même implémente l'interface `iDocument` ). Placez la ensuite dans un sous-dossier comme pour la Class `Book` .
 
-#### `assets` and `library` sub-folders
+#### Les sous-dossiers `assets` et `library` 
 
-The `assets` folder contain a bunch of `.txt` files used to form the document (in this case, all of the books). Every file contain one type of Class field, like `ID` or `author` , and then the `FilesToBookIntoXML` Class converts everything into `.xml` and store them in the `library` folder.
+Le dossier `assets` contient juste les fichiers texte utilisés pour former les documents (ici les livres). Tous les fichiers sont formé de champs de Class, par exemple une suite de tous les IDs ou les auteurs, et la Class `FilesToBookIntoXML` les convertie en fichiers XML et les mets dans le dossier `library` .
 
 ## User
 
-### Files
+### Fichiers
 
 ``` 
 user
@@ -73,22 +73,22 @@ user
     ┆   ...
 ```
 
-The `user` Class is very similar to a `document` , it doesn't implements nor extends any Class but still have an `assets` and `library` -like folder ( `database` ).
+La Class `user` ressemble assez à un `document` , elle n'implémente ni étand aucune Class mais elle a elle aussi des dossiers `assets` et `library` ( `database` dans ce cas)
 
-## How it works
+## Comment ça marche
 
-We will cover the `client` side first because it's smaller and it simplify the `server` side explanation.
+Le coté client est présenté en premier car il est plus court et simplifie un petit peu la comprehantion du coté serveur.
 
-### Client side
+### Coté client
 
-When executing the `User` Class, you first have to enter your user's credentials like so :
+Lors de l'execution, vos identifients son requis :
 
 ``` 
 Please, enter your credentials :
 "your_ID" "your_password"
 ```
 
-If the authentication is successful, display user's data : (it's more for the programmer's convenience but it's good to have)
+Si l'autentification réussie, un résumé de l'utilisateur est affiché (c'est plus utile pour le programmeur mais c'est toujours bien de l'avoir).
 
 ``` 
 Authentication successful.
@@ -96,73 +96,72 @@ User n°0259558340 {
   Pass  : **********
   Name  : Jean-François Brette
   eMail : jean-francois.brette@parisdescartes.fr
-  Age   : 47 (I guess... ¯\_(ツ)_/¯)
+  Age   : 47 (j'imagine... ¯\_(ツ)_/¯)
 }
 ```
 
-If not, then print error message and exit.
+Sinon, affiche un message d'erreur et ferme le programme.
 
-### Server side
+### Coté serveur
 
-The server work is divided between five threads, each thread then calls a sub-thread to do the work and die.
+Le foncionnement du serveur est divisé en cinq threads, chacun crée ensuite un sous-thread pour faire le sale boulot.
 
-The `Server.java` file is structured like so :
+Le fichier `Server.java` est structuré de cette manière :
 
 ``` 
 main
-│   creating the library and user database
+│   crée la library et la base de donnée
 │
 ├───booking thread
-│   │   check for connection
-│   └───sub-thread
-│       │   reserve the book, then die
+│   │   attend une connexion
+│   └───sous-thread
+│       │   reserve le livre, puis meurt
 │
 ├───borrowing thread
-│   │   check for connection
-│   └───sub-thread
-│       │   borrow the book, then die
+│   │   attend une connexion
+│   └───sous-thread
+│       │   emprunte le livre, puis meurt
 │
 ├───returning thread
-│   │   check for connection
-│   └───sub-thread
-│       │   return the book, then die
+│   │   attend une connexion
+│   └───sous-thread
+│       │   rend le livre, puis meurt
 │
 ├───authentication thread
-│   │   check for connection
-│   └───sub-thread
-│       │   check if user exists, then die
+│   │   attend une connexion
+│   └───sous-thread
+│       │   verifie si l'utilisateur existe, puis meurt
 │
 └───catalogue thread
-    │   check for connection
-    └───sub-thread
-        │   send the catalogue, then die
+    │   attend une connexion
+    └───sous-thread
+        │   envoie le catalogue, puis meurt
 ```
 
-#### Contractual threads
+#### Threads contractuels
 
-All the threads are very similar, but the three "book's" ones are almost identical.
-They check for a connection, create the sub-thread who then ask for the `user` 's and `book` 's ID. With that, check for the `book` in the `library` and then call the concerned method with the correct `user` as parameter (the `UserDB` Class has a method to find it).
+Tous les threads sont plutôt similaires mais les trois concernants les livres se ressembles particulièrement. Ils attendent un connexion, créent leur sous-thread qui à leur tour reçoivent les IDs de l'utilisateur et du livre en question. Avec ça, ils cherchent le livre dans la library et execute la methode avec le bon utilisateur (la Class `UserDB` a une methode pour le trouver).
 
 ``` java
-// find the book
+// trouve le livre
 Book b = Objects.requireNonNull(library.getCatalog().stream()
     .filter(book -> book.getID().equals(bookID))
     .findAny().orElse(null));
-// execute the method 
+// execute la methode 
 b.method(userDB.findUserFromID(userID));
 ```
 
-The `.orElse(null)` is thwart by the `Object.requireNonNull` at the beginning.
+Le `.orElse(null)` est contrecaré par le `Object.requireNonNull` au début.
 
-#### Authentication thread
+#### Thread pour l'autentification
 
-The authentication thread check just if the user exist, if yes : send it to the `client` , else : send a `null` that the `Client` Class can understand as an error.
+Ce thread vérifie si l'utilisateur existe, si oui : le renvoie au client, sinon : renvoie un `null` (que le client interprète bien comme une erreur).
 
-#### Catalogue thread
+#### Thread pour le catalogue
 
-This thread check just for a connection, then the sub-thread can send the catalogue to the `client` . It just call the `toString()` method of the `library` and add a timestamp.
+Ce thread attend juste une connexion. Si connexion il y a, un sous-thread se charge d'envoyer le catalogue et l'heure de mise à jour à l'utilisateur connecté.
 
-The `.toString()` method of the `library` then call the same method for each `book` , their `.toString()` automatically tells if the `book` is either available, reserved or unavailable like this :
+La methode `.toString()` de la library appelle la même methode mais pour chaque livre. Leurs methode s'adapte à l'état du livre, precisant donc s'il est disponible, reservé ou indisponible.
 
 ``` 
 Book n°6267855912 {
@@ -171,101 +170,101 @@ Book n°6267855912 {
 } Available
 ```
 
-# BretteSoft© certifications
+# Certifications BretteSoft©
 
-Please note that we didn't implement those certification, yet. We will only talk about how they can be implemented in our project, with bits of code.
+S'il vous plait, notez que ces certifications n'ont pas été implémentés, pour le moment.
+À la place nous allons expliquer comment peuvent elles être implémentées dans notre projet, avec un peu d'exemple de code.
 
 ## "Géronimo"
 
 ### Description
 
-Some subscribers return books late (sometimes very late), others degrade the books they borrow. A subscriber exceeding a delay of more than 2 weeks and or who deteriorate the book will be prohibited from borrowing for 1 month.
+Certains abonnés rendent les livres en retard (parfois avec un gros retard) ; d’autres dégradent leslivres qu’ils empruntent ; un abonné, suite à un retard de plus de 2 semaines ou à dégradation delivre constatée au retour, sera interdit d’emprunt pendant 1 mois.
 
 ### Solution
 
-First, we can add a field in the `User` Class to know if the user is prohibited.
-After that, we still have to check if the user is late.
+En premier, nous pouvons ajouter un champ dans la Class `user` pour savoir si un utilisateur est interdit. On doit ensuite verifier si l'utilisateur est en effet en retard.
 
-For that we can use the `LocalDate` and `Period` Classes like so :
+Pour ça, les Classes Java `LocalDate` et `Period` sont d'une grande utilité :
 
 ``` java
-// setting the deadline to two weeks ahead
+// mise en place de la deadline à deux semaines plus tard
 LocalDate deadline = LocalDate.now().plusWeeks(2);
 
-// checking if the deadline is passed
+// verification
 if (LocalDate.new().isAfter(deadline))
-    /* ban the user */
+    /* interdit l'utilisateur */
 else
-    /* tels him to have a good day */
+    /* lui souhaite une bonne journée */
 ```
 
-Same goes for a ban user :
+Pareil pour un utilisateur interdit :
 
 ``` java
-// setting the end of the banning to one month ahead
+// mise en place de la fin d'interdiction à un mois plus tard
 LocalDate endOfBan = LocalDate.now().plusMonths(1);
 
-// checking if the ban date is passed
+// verification
 if (LocalDate.new().isAfter(endOfBan))
-    /* unban the user */
+    /* enlève l'interdiction */
 else
-    /* tels him he's still ban */
+    /* lui dis qu'il est encore interdit */
 ```
 
 ## "Cochise"
 
 ### Description
 
-We add DVDs to the documents of this library (which becomes a media library). Some DVDs are reserved for people over 12 or 16 years old.
+On ajoute des DVDs aux documents de cette bibliothèque (qui devient une médiathèque). Certains DVDs sont réservés aux plus de 12 ou 16 ans.
 
 ### Solution
 
-Almost implemented without knowing, there is a `age` field in the `User` Class.
+Presque implémentée sans le savoir, il y a un champ `age` dans la Class `user` .
 
-You just have to override the `booking` and `borrowing` methods in the `DVD` Class, who obviously extends the `Item` Class, like that :
+Il suffit juste d'override les methodes `booking` et `borrowing` dans la Class DVD, qui bien évidemment extends la Class `Item` , comme ça :
 
 ``` java
 @Override
 public void method(User user) throws BookingException {
     if (user.getAge() >= this.age)
-        /* same as before */
+        /* comme avant */
     else
-        /* tells the user to come back older */
+        /* dis à l'utilisateur de vieillir un peu */
 }
 ```
 
-Of course we need to add the DVD's library at the start of the `server` , exactly like the books.
+Bien sûr il ne faut apas oublier d'ajouter une liste de DVD au lancement du serveur.
 
 ## "Sitting bull"
 
 ### Description
 
-When making a reservation, if the book is not available offer to place an email alert notifying the user when the book has been returned.
+Lors d’une réservation, si le livre n’est pas disponible, on pourra proposer de placer une alerte mail nous avertissant du retour du livre. La certification suppose l’exploration des bibliothèques de mail java et l’envoi d’un mail-test dans le contexte approprié à l’abonné Brette.
 
 ### Solution
 
-We can add another field in the `Item` Class, like `nextUser` for example. And then we add this code in the `returning` method :
+Un nouveau champ peut être ajouté dans la Class `User` , par example `nextUser` . Il suffit ensuite de rajouter ce code dans la methode `returning` :
 
 ``` java
 @Override
 public void returning(User user) throws ReturnException {
-    /* same as before */
+    /* comme avant */
     notify(this.nextUser);
 }
 ```
 
-Another solution is to modify the field `user` to a List of `user` . Doing that enable the possibility to queue users. Here's the code of the `returning` method :
+Une autre solution est de remplacer le champ `user` par une `List` de `user` . Faire ça permet en plus de faire une file d'attente pour le document. Le code de la methode `returning` devient :
 
 ``` java
 @Override
 public void returning(User user) throws ReturnException {
-    /* same as before */
+    /* comme avant */
     this.user.remove(0);
     notify(this.user(0));
 }
 ```
 
-And we need to modify the `booking` method like so :
+Il faut modifier la methode `booking` :
 
 ``` java
 @Override
@@ -275,31 +274,31 @@ public void booking(User user) {
 }
 ```
 
-... and in the `borrowing` method, modify the 
+... et de changer dans la methode `borrowing` :
 
 ``` java
 if (this.reserved)
 ```
 
-to 
+avec 
 
 ``` java
 if (this.user.size() == 0)
 ```
 
-You can see here that we no longer need the `reserved` field in the `Item` Class because now multiple peoples can reserve an item. Instead if we need, we can check if the List's length.
+Vous pouvez voir ici que le champ `reserved` n'est plus d'aucune utilité puisque si le document est déjà réservé vous êtes juste mis en file d'attente.À la place, on peut verifier la taille de la liste.
 
-# Authors
+# Auteurs
 
-* **Marius Vallas** - *Git management, all the XML conversion crap, `Sockets` programming and overall refactoring / commenting code*
-* **Gabriel Arbane** - *Multi threading and both `Client` and `Server` programming*
-* **Antoine Dedieu** - *Multi threading and `Server` programming and `user` crap*
+* **Marius Vallas** - *Gestion du Git, tous les trucs avec les XML, la programmation des `Sockets` et tout le refactoring et la documentation du code.*
+* **Gabriel Arbane** - *Multi threading et la partie `Client` et `Server` .*
+* **Antoine Dedieu** - *Multi threading, la partie `Server` et la gestion des `user` .*
 
 ## License
 
-This project is licensed under the MIT License - see the [License](LICENSE) file for details
+Ce projet est sous la licence du MIT - voir le fichier [License](LICENSE) pour plus de détails.
 
-## Acknowledgments
+## Remerciement
 
 Bonjour M. Brette, vous allez bien mdr ?
 

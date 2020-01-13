@@ -2,7 +2,7 @@
 
 A Java project using Sockets, Multi-threading, Object-XML conversion and a lot more.
 
-The project is overall well documented, so I'll not explain the code here, if you want to know how a specific part works, just go to the file. Each file has a little tree of method at the beginning.
+The project is overall well documented, so I'll not explain the code here, if you want to know how a specific part works, just go to the file.
 
 *I'll show a lil' bit of code when appropriate tho.*
 
@@ -52,7 +52,7 @@ To form a new type of `Document` you have to extends `Item` (an abstract Class),
 
 #### `assets` and `library` sub-folders
 
-The `assets` folder contain a bunch of `.txt` files used to form the document (in this case, all of the books). Every file contain one type of Class field, like `ID` or `author` , and then the `FilesToBookIntoXML` Class converts everything into `.xml` and store them in the `library` folder.
+The `assets` folders contain a bunch of `.txt` files used to form the document (in this case, all of the books). Every file contain one type of Class field, like `ID` or `author` , and then the `FilesToBookIntoXML` Class converts everything into `.xml` and store them in the `library` folder.
 
 ## User
 
@@ -297,7 +297,7 @@ You can see here that we no longer need the `reserved` field in the `Item` Class
 
 ## License
 
-This project is licensed under the MIT License - see the [License](LICENSE) file for details
+This project is licensed under the MIT License - see the [License](LICENSE) file for details.
 
 ## Acknowledgments
 
