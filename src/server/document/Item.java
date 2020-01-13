@@ -134,6 +134,9 @@ public abstract class Item implements iDocument {
         }
     }
 
+    /**
+     * Reset a book to its original state.
+     */
     public void reset() {
         this.available = true;
         this.reserved = false;

@@ -1,5 +1,5 @@
 /**
- * What can I said... It's the User Class. duh.
+ * What can I say... It's the User Class. duh.
  * This Class have all the XML crap needed to be converted.
  *
  * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
@@ -41,12 +41,16 @@ public class User implements java.io.Serializable {
         this.ID = ID;
     }
 
-    /* Auto generated getter, modified to package-private */
+    /**
+     * Auto generated getter, modified to package-private
+     */
     String getPassword() {
         return password;
     }
 
-    /* Auto generated setter, modified to package-private */
+    /**
+     * Auto generated setter, modified to package-private
+     */
     @XmlElement
     void setPassword(String password) {
         this.password = password;

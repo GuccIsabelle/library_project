@@ -171,6 +171,124 @@ Book n°6267855912 {
 } Available
 ```
 
+# BretteSoft© certifications
+
+Please note that we didn't implement those certification, yet. We will only talk about how they can be implemented in our project, with bits of code.
+
+## "Géronimo"
+
+### Description
+
+Some subscribers return books late (sometimes very late), others degrade the books they borrow. A subscriber exceeding a delay of more than 2 weeks and or who deteriorate the book will be prohibited from borrowing for 1 month.
+
+### Solution
+
+First, we can add a field in the `User` Class to know if the user is prohibited.
+After that, we still have to check if the user is late.
+
+For that we can use the `LocalDate` and `Period` Classes like so :
+
+``` java
+// setting the deadline to two weeks ahead
+LocalDate deadline = LocalDate.now().plusWeeks(2);
+
+// checking if the deadline is passed
+if (LocalDate.new().isAfter(deadline))
+    /* ban the user */
+else
+    /* tels him to have a good day */
+```
+
+Same goes for a ban user :
+
+``` java
+// setting the end of the banning to one month ahead
+LocalDate endOfBan = LocalDate.now().plusMonths(1);
+
+// checking if the ban date is passed
+if (LocalDate.new().isAfter(endOfBan))
+    /* unban the user */
+else
+    /* tels him he's still ban */
+```
+
+## "Cochise"
+
+### Description
+
+We add DVDs to the documents of this library (which becomes a media library). Some DVDs are reserved for people over 12 or 16 years old.
+
+### Solution
+
+Almost implemented without knowing, there is a `age` field in the `User` Class.
+
+You just have to override the `booking` and `borrowing` methods in the `DVD` Class, who obviously extends the `Item` Class, like that :
+
+``` java
+@Override
+public void method(User user) throws BookingException {
+    if (user.getAge() >= this.age)
+        /* same as before */
+    else
+        /* tells the user to come back older */
+}
+```
+
+Of course we need to add the DVD's library at the start of the `server` , exactly like the books.
+
+## "Sitting bull"
+
+### Description
+
+When making a reservation, if the book is not available offer to place an email alert notifying the user when the book has been returned.
+
+### Solution
+
+We can add another field in the `Item` Class, like `nextUser` for example. And then we add this code in the `returning` method :
+
+``` java
+@Override
+public void returning(User user) throws ReturnException {
+    /* same as before */
+    notify(this.nextUser);
+}
+```
+
+Another solution is to modify the field `user` to a List of `user` . Doing that enable the possibility to queue users. Here's the code of the `returning` method :
+
+``` java
+@Override
+public void returning(User user) throws ReturnException {
+    /* same as before */
+    this.user.remove(0);
+    notify(this.user(0));
+}
+```
+
+And we need to modify the `booking` method like so :
+
+``` java
+@Override
+public void booking(User user) {
+    assert user != null : "User can't be null."; // panic if user not in database
+    this.user.add(user);
+}
+```
+
+... and in the `borrowing` method, modify the 
+
+``` java
+if (this.reserved)
+```
+
+to 
+
+``` java
+if (this.user.size() == 0)
+```
+
+You can see here that we no longer need the `reserved` field in the `Item` Class because now multiple peoples can reserve an item. Instead if we need, we can check if the List's length.
+
 # Authors
 
 * **Marius Vallas** - *Git management, all the XML conversion crap, `Sockets` programming and overall refactoring / commenting code*

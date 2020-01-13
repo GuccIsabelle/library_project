@@ -23,12 +23,20 @@ public interface iDocument {
     /* return document or cancel booking */
     void returning(User user) throws ReturnException;
 
+    /**
+     * SubClass for the BookingException.
+     * It just calls the super() constructor.
+     */
     class BookingException extends Exception {
         public BookingException(String error) {
             super(error);
         }
     }
 
+    /**
+     * SubClass for the BookingException.
+     * It just calls the super() constructor.
+     */
     class ReturnException extends Exception {
         public ReturnException(String error) {
             super(error);

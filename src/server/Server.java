@@ -3,7 +3,6 @@
  * It involve using 5 threads :
  * - 3 like stipulated in the contract
  * - 2 added for user's convenience
- * <p>
  * Each thread wait for a connection to occur and then
  * create a sub-thread to fulfill the user demand.
  *
@@ -42,10 +41,12 @@ public class Server {
         UserDB userDB = new UserDB("C:\\Users\\Marius\\Documents\\Code\\JAVA\\library_project\\src\\server\\user\\database");
         System.out.println(userDB.toString());
 
+        /* creating the Timer */
         Timer timer = new Timer();
 
         /**
          * Booking thread
+         * Check for a connection, then give the work to a sub-thread.
          */
         new Thread(() -> {
             System.out.println(Thread.currentThread().getName() + " started");
@@ -55,6 +56,15 @@ public class Server {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
+
+                    /**
+                     * Sub-thread
+                     * Find the book from the given ID and calls his booking method
+                     * with the correct user.
+                     *
+                     * need : User's and Book's ID
+                     * send : result or error message
+                     */
                     new Thread(() -> {
                         System.out.println("booking sub-thread started, id : " + Thread.currentThread().getId());
                         try {
@@ -100,6 +110,7 @@ public class Server {
 
         /**
          * Borrowing thread
+         * Check for a connection, then give the work to a sub-thread.
          */
         new Thread(() -> {
             System.out.println(Thread.currentThread().getName() + " started");
@@ -109,6 +120,15 @@ public class Server {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
+
+                    /**
+                     * Sub-thread
+                     * Find the book from the given ID and calls his borrowing method
+                     * with the correct user.
+                     *
+                     * need : User's and Book's ID
+                     * send : result or error message
+                     */
                     new Thread(() -> {
                         System.out.println("borrowing sub-thread started, id : " + Thread.currentThread().getId());
                         try {
@@ -143,6 +163,7 @@ public class Server {
 
         /**
          * Returning thread
+         * Check for a connection, then give the work to a sub-thread.
          */
         new Thread(() -> {
             System.out.println(Thread.currentThread().getName() + " started");
@@ -152,6 +173,15 @@ public class Server {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
+
+                    /**
+                     * Sub-thread
+                     * Find the book from the given ID and calls his returning method
+                     * with the correct user.
+                     *
+                     * need : User's and Book's ID
+                     * send : result or error message
+                     */
                     new Thread(() -> {
                         System.out.println("returning sub-thread started, id : " + Thread.currentThread().getId());
                         try {
@@ -186,6 +216,7 @@ public class Server {
 
         /**
          * Authentication thread
+         * Check for a connection, then give the work to a sub-thread.
          */
         new Thread(() -> {
             System.out.println(Thread.currentThread().getName() + " started");
@@ -195,6 +226,17 @@ public class Server {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
+
+                    /**
+                     * Sub-thread
+                     * Check if the user exist in userDB,
+                     * if yes : send it to the client
+                     * if not : send a null
+                     * (the client interpret the null like "user not found")
+                     *
+                     * need : User's ID and password
+                     * send : result or error message
+                     */
                     new Thread(() -> {
                         System.out.println("authentication sub-thread started, id : " + Thread.currentThread().getId());
                         try {
@@ -202,21 +244,19 @@ public class Server {
                             String[] userCredentials = new DataInputStream(socket.getInputStream()).readUTF().split("\\s+");
                             /* sending out the corresponding user, null is none */
                             new ObjectOutputStream(socket.getOutputStream()).writeObject(userDB.returnIfExist(userCredentials[0], userCredentials[1]));
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }).start();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }, "authentication_thread").start();
 
         /**
          * Catalogue thread
+         * Check for a connection, then give the work to a sub-thread.
          */
         new Thread(() -> {
             System.out.println(Thread.currentThread().getName() + " started");
@@ -226,6 +266,14 @@ public class Server {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("connexion established with " + socket.getInetAddress().getHostName());
+
+                    /**
+                     * Sub-thread
+                     * Calls the .toString() method of the library and
+                     * add a timestamp for user convenience.
+                     *
+                     * send : String of the catalogue
+                     */
                     new Thread(() -> {
                         System.out.println("catalogue sub-thread started, id : " + Thread.currentThread().getId());
                         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss");

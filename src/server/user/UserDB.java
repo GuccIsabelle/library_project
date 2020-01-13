@@ -1,3 +1,10 @@
+/**
+ * This Class is used for converting
+ *
+ * @author Marius Vallas, Gabriel Arbane, Antoine Dedieu
+ * @version 2.3
+ */
+
 package server.user;
 
 import javax.xml.bind.JAXBContext;
@@ -14,6 +21,11 @@ import java.util.stream.Collectors;
 public class UserDB {
     private List<User> userList = new ArrayList<>();
 
+    /**
+     * Constructor
+     *
+     * @param path path to the users XML folder
+     */
     public UserDB(String path) {
         try {
             Files.walk(Paths.get(path))
@@ -34,6 +46,13 @@ public class UserDB {
         }
     }
 
+    /**
+     * Find if a user exist with the given ID and password.
+     *
+     * @param ID       user's ID
+     * @param password user's password
+     * @return User (if find), null (if not)
+     */
     public User returnIfExist(String ID, String password) {
         return userList.stream()
                 .filter(user -> user.getID().equals(ID) && user.getPassword().equals(password))
