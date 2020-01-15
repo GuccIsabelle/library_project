@@ -170,6 +170,85 @@ Book n°6267855912 {
 } Available
 ```
 
+# Comment nous avons géré les choses
+
+## Mutli-threading et accès simultanés aux données
+
+Les problèmes que les Threads créent sont innombrables. Comment pouvons nous réduire les risques d'écritures simultanées, ou même comment les faires disparaitres ?
+
+### Ce que nous avons fait
+
+Pour gérer les accès sur une même donnée au même moment, il existe un tas de solutions mais nous avons décidés d'utiliser des `méthodes cazi-pures` . Elles ne sont pas `100% pures` car elles ne répondent pas au second critère d'une fonction pure, à savoir n'avoir aucun effet de bord lors de son execution. Dans notre cas nous voulons modifier des données exterieurs donc nous brisons délibérément cette règle.
+
+### Et comment nous l'avons fait
+
+La logique derrière notre code est la suivante.
+
+Voici ce qui se passe :
+
+``` java
+// at time t
+Thread threadA
+└───veut modifier Object objX
+    │   appelle objX.method
+
+// at the same time t
+Thread threadB
+└───veut modifier Object objX
+    │   appell objX.method
+```
+
+et ce qui se passe avec des méthodes pure (directement codées dans l'Object) ressemble à ça :
+
+1. 2 Threads demande l'execution d'une même méthode
+2. La JVM "choisie" qui execute en premier
+3. Le premier Thread execute la méthode, puis l'Object modifie ses données
+4. Le second Thread execute à son tour la méthode mais avec les nouvelles données
+
+Dans notre cas cela donne quelquechose comme ça :
+
+1. Deux personnes veulent prendre le même livre au même moment
+2. Ils tirent à la courte paille qui passera en premier au guichet
+3. Le "gagnant" peut prendre le livre sans problème
+4. Le "perdant" essaye de le l'emprunter mais on luirépond que le livre n'est plus disponible
+
+## Gestion des tâches basées sur le temps
+
+L'action d'emprunter sous entend qu'il faut surveiller les utilisateurs qui empruntent. Que se passe-t'il si quelqu'un reserve un livre mais ne vient pas le chercher ? C'est à nous de trouver une solution.
+
+### Ce que nous avons fait
+
+Pour cette tâche, nous avons utilisé la Class Java `Timer` couplée avec `TimerTask` . On crée un `Timer` au lancement du serveur puis nous ajoutons des `TimerTask` quand nécessaire.
+
+### Et comment nous l'avons fait
+
+Comme expliqué, nous créons d'abord un `Timer` au lancement du serveur.
+
+``` java
+Timer timer = new Timer();
+```
+
+Puis les `TimerTask` sont ajoutées de cette manière :
+
+``` java
+/* après que la réservation soit faite */
+
+timer.schedule(() -> {
+    if (b.isAvailable()) { // on verifie si le livre est toujours dispo (non emprunté)
+        b.reset(); // si oui, alors on le réinitialise
+        System.out.println("book n°" + bookID + " has been reset.");
+    }
+     cancel(); // on annule la tache, cela supprime la TimerTask (libération de mémoire, CPU et tt...)
+
+}, 120000); // délai de 2 minutes
+
+/**
+ * Notez que Java 8 ne supporte pas les expressions lambda pour les TimerTasks !
+ * IntelliJ le fait mais uniquement de façon esthétique, vous pouvez déployer
+ * l'expression pour afficher le code complet de l'instanciation d'une TimerTask.
+ */
+```
+
 # Certifications BretteSoft©
 
 S'il vous plait, notez que ces certifications n'ont pas été implémentés, pour le moment.

@@ -171,6 +171,85 @@ Book n°6267855912 {
 } Available
 ```
 
+# How we've handled things
+
+## Multi-threading and data access
+
+The number one problem with Threads is always data accesses. How can we reduce the risks of simultaneous writing or avoid it completely ?
+
+### What we've done
+
+To handle multiple accesses to data in the same time, a lot of solutions exist but the one we've choose is to write `almost-pure methods` . They are *almost*-pure because they lack pure-function's second properties, which is to have no side-effects on other part of the data. We want to modify the data so of course we will break that rule.
+
+### How we did it
+
+The logic behind our code is as follows.
+
+This is what happen :
+
+``` java
+// at time t
+Thread threadA
+└───want to modify Object objX
+    │   calls the objX.method
+
+// at the same time t
+Thread threadB
+└───want to modify Object objX
+    │   calls the objX.method
+```
+
+and what happen with pure-methods, who are directly codded into the targeted Object, is this :
+
+1. 2 Threads ask to access the same method
+2. The JVM "choose" who's first
+3. The first Thread execute the method, the Object change is own data
+4. After that the Object will be executed by the second Thread with the new data
+
+In our case that's something like this :
+
+1. Two users want to take a book at the same time
+2. They draw straws to see who's first
+3. The "winner" take the book successfully
+4. The "looser" try to take it but he's told the book isn't available
+
+## Timers and time-based tasks
+
+The booking task imply to watch over those who reserve their Items. What if someone books an Item and never borrows it ? This is our task to prevent this kind of behavior.
+
+### What we've done
+
+For this task, we ended up using the Java Classes `Timer` and `TimerTask` . We create a `Timer` at the server's launch and then we can add it as much `TimerTask` as we need.
+
+### How we did it
+
+First a `Timer` is instanced at the server's start like said before.
+
+``` java
+Timer timer = new Timer();
+```
+
+Then `TimerTask` are added when needed, like so :
+
+``` java
+/* after the booking occurs */
+
+timer.schedule(() -> {
+    if (b.isAvailable()) { // if the book isn't borrowed by the user who reserved
+        b.reset(); // then make the book available again
+        System.out.println("book n°" + bookID + " has been reset.");
+    }
+     cancel(); // cancel this Task after the stuff is done
+
+}, 120000); // setting the delay to 2 minutes
+
+/**
+ * Note that this is a lambda expression not supported in Java 8 !
+ * IntelliJ support it only for visual purpose, you can extend it 
+ * to see the full code of the TimerTask's instantiation.
+ */
+```
+
 # BretteSoft© certifications
 
 Please note that we didn't implement those certification, yet. We will only talk about how they can be implemented in our project, with bits of code.
